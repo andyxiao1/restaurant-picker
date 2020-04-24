@@ -2,8 +2,12 @@ const oracledb = require('oracledb');
 const dbConfig = require('./dbconfig.js');
 
 // config.connectionLimit = 10;
-const connection = await oracledb.getConnection(dbConfig);
-// usage example:     result = await connection.execute(sql, binds, options);
+let connection = null;
+oracledb
+  .getConnection(dbConfig)
+  .then((conn) => (connection = conn))
+  .catch((err) => console.log(err));
+// usage example:  result = await connection.execute(sql, binds, options);
 // var connection = mysql.createPool(config);
 
 /* -------------------------------------------------- */
@@ -118,6 +122,18 @@ function bestGenresPerDecade(req, res) {
   });
 }
 
+function test(req, res) {
+  const sql = `SELECT * FROM Business WHERE ROWNUM <= 10`;
+  const binds = {};
+  options = {
+    outFormat: oracledb.OUT_FORMAT_OBJECT,
+  };
+  connection
+    .execute(sql, binds, options)
+    .then((data) => res.send(data))
+    .catch((err) => console.log(err));
+}
+
 // The exported functions, which can be accessed in index.js.
 module.exports = {
   getAllGenres: getAllGenres,
@@ -125,4 +141,5 @@ module.exports = {
   getRecs: getRecs,
   getDecades: getDecades,
   bestGenresPerDecade: bestGenresPerDecade,
+  test: test,
 };

@@ -18,6 +18,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // routes.getAllGenres, specified in routes.js.
 app.get('/genres', routes.getAllGenres);
 
+app.get('/test', routes.test);
+
 /* ---- Q1b (Dashboard) ---- */
 app.get('/genres/:genre', routes.getTopInGenre);
 
