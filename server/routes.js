@@ -1,8 +1,10 @@
-var config = require('./db-config.js');
-var mysql = require('mysql');
+const oracledb = require('oracledb');
+const dbConfig = require('./dbconfig.js');
 
-config.connectionLimit = 10;
-var connection = mysql.createPool(config);
+// config.connectionLimit = 10;
+const connection = await oracledb.getConnection(dbConfig);
+// usage example:     result = await connection.execute(sql, binds, options);
+// var connection = mysql.createPool(config);
 
 /* -------------------------------------------------- */
 /* ------------------- Route Handlers --------------- */
