@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
 import Head2Head from './head2head/Head2Head.js';
+import Filter from './filter/Filter.js';
 
 const App = () => {
   return (
@@ -20,6 +21,11 @@ const App = () => {
                 Head to Head
               </Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="filter" as={Link} to="/filter">
+                Filter
+              </Nav.Link>
+            </Nav.Item>
           </Nav>
         </Navbar>
         <Row className="h-100">
@@ -27,6 +33,7 @@ const App = () => {
             {/* Sets up URL routes */}
             <Switch>
               <Route path="/headtohead" component={Head2Head}></Route>
+              <Route path="/filter" component={Filter}></Route>
               {/* <Route
                 path="/login"
                 render={(props) => (
