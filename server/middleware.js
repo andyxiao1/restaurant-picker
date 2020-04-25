@@ -13,4 +13,12 @@ const oracleMiddleware = (req, res, next) => {
   });
 };
 
-module.exports = { oracleMiddleware };
+// closes db connection
+const onFinishMiddleware = (req, res, next) => {
+  res.on('finish', () => {
+    req._oracledb.close().catch((err) => console.log(err));
+  });
+  next();
+};
+
+module.exports = { oracleMiddleware, onFinishMiddleware };

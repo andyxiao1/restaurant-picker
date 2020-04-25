@@ -10,6 +10,7 @@ app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(middleware.oracleMiddleware);
+app.use(middleware.onFinishMiddleware);
 
 /* ---------------------------------------------------------------- */
 /* ------------------- Route handler registration ----------------- */
@@ -26,6 +27,12 @@ app.get('/filter', routes.getGrades);
 
 app.get('/filter/:selectedGrade', routes.bestRestsForGrade);
 
-app.listen(8081, () => {
+
+const server = app.listen(8081, () => {
   console.log(`Server listening on PORT 8081`);
+});
+
+process.on('SIGINT', () => {
+  server.close();
+  process.exit();
 });
