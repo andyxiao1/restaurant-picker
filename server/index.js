@@ -21,6 +21,11 @@ app.get('/test', routes.test);
 /* ---- Head to Head Page ---- */
 app.get('/api/headtohead', routes.headtohead);
 
+/* ---- Filter Page ---- */
+app.get('/filter', routes.getGrades);
+
+app.get('/filter/:selectedGrade', routes.bestRestsForGrade);
+
 app.listen(8081, () => {
   console.log(`Server listening on PORT 8081`);
 });
