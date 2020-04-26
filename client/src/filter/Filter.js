@@ -32,22 +32,23 @@ export default class Filter extends React.Component {
       // Print the error if there is one.
       console.log(err);
     }).then(gradeList => {
+      console.log(gradeList);
       if (!gradeList) return;
-      // Map each genreObj in genreList to an HTML element:
-      // A button which triggers the showMovies function for each genre.
-      let gradeDivs = gradeList.map((gradeObj, i) =>
-			<option value={gradeObj.grade}>{gradeObj.grade}</option> 
+     
+      let gradeDivs = gradeList.rows.map((gradeObj, i) =>
+			<option value={gradeObj}>{gradeObj}</option> 
 			);
 
-      // Set the state of the genres list to the value returned by the HTTP response from the server.
       this.setState({
-				grade: gradeDivs,
-				selectedGrade: gradeList[0].grade
+				grades: gradeDivs,
+				selectedGrade: gradeList.rows[0]
       });
     }, err => {
       // Print the error if there is one.
       console.log(err);
     });
+
+    console.log(this.state.grades);
 
 	}
 
@@ -93,7 +94,7 @@ export default class Filter extends React.Component {
 			            <select value={this.state.selectedGrade} onChange={this.handleChange} className="dropdown" id="gradesDropdown">
 			            	{this.state.grades}
 			            </select>
-			            <button className="submit-btn" id="decadesSubmitBtn" onClick={this.submitGrade}>Submit</button>
+			            <button className="submit-btn" id="gradesSubmitBtn" onClick={this.submitGrade}>Submit</button>
 			          </div>
 			        </div>
 			      </div>

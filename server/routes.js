@@ -31,10 +31,10 @@ function getGrades(req, res) {
   SELECT DISTINCT current_grade as grade
   FROM Inspection
   WHERE current_grade <> 'X'
-  `;
+  ORDER BY current_grade ASC`;
   req._oracledb
     .execute(sql)
-    .then((data) => res.send(data))
+    .then((data) => res.json(data))
     .catch((err) => console.log(err));
 }
 
