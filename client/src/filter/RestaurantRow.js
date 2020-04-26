@@ -8,7 +8,7 @@ export default class RestaurantRow extends React.Component {
 
 	render() {
 		return (
-			<div className="restaurant">
+			<div className="results">
 				<div className="name">{this.props.name}</div>
 				<div className="grade">{this.props.grade}</div>
 				<div className="stars">{this.props.stars}</div>

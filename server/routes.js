@@ -40,12 +40,12 @@ function getGrades(req, res) {
 
 function bestRestsForGrade(req, res) {
   var selectedGrade = req.params.selectedGrade;
-	const sql = `
-  SELECT b.Name as name, b.Stars as stars, i.current_grade as grade, b.Address as address
+  var selectedStar = req.params.selectedStar;
+  const sql = `SELECT * FROM ( SELECT DISTINCT b.Name as name, b.Stars as stars, i.current_grade as grade, b.Address as address
   FROM Business b Join Inspection i ON b.name = i.restaurant_name
-  WHERE i.current_grade <= '${selectedGrade}'
-  ORDER BY Stars desc;
-  `;
+  WHERE i.current_grade <= '${selectedGrade}' AND b.Stars >= ${selectedStar}
+  ORDER BY stars DESC, i.current_grade ASC )
+  WHERE ROWNUM <= 90 `;
   req._oracledb
   .execute(sql)
   .then((data) => res.send(data))

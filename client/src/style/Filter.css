@@ -3,8 +3,10 @@
     flex-flow: column wrap;
     margin-top: 10px;
 }
+
+.rowTest{display:flex; flex-direction:row;}
   
-.rests-container .rest, .rests-container .movieResults {
+.rests-container .rest, .rests-container .results {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -12,6 +14,6 @@
     padding: 0 10px;
 }
   
-.movie .header, .movieResults .name, .movieResults .grade, .movieResults .stars, .movieResults .address {
+.rest .header, .results .name, .results .grade, .results .stars, .results .address {
     flex: 1 0 25%;
 }

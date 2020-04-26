@@ -25,7 +25,7 @@ app.get('/api/headtohead', routes.headtohead);
 /* ---- Filter Page ---- */
 app.get('/filter', routes.getGrades);
 
-app.get('/filter/:selectedGrade', routes.bestRestsForGrade);
+app.get('/filter/:selectedGrade/:selectedStar', routes.bestRestsForGrade);
 
 
 const server = app.listen(8081, () => {
