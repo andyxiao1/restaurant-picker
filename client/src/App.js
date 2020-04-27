@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
 import Head2Head from './head2head/Head2Head.js';
+import Preferences from './recommendations/Preferences.js';
 
 const App = () => {
   return (
@@ -20,6 +21,11 @@ const App = () => {
                 Head to Head
               </Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="preferences" as={Link} to="/preferences">
+                Recommendation Engine
+              </Nav.Link>
+            </Nav.Item>
           </Nav>
         </Navbar>
         <Row className="h-100">
@@ -34,7 +40,9 @@ const App = () => {
                 )}
               ></Route> */}
               {/* {isAdmin && <Route path="/admin" component={AdminPage}></Route>} */}
+              <Route path="/preferences" component={Preferences}></Route>
               <Route path="/" component={Head2Head}></Route>
+             
             </Switch>
           </Col>
         </Row>

@@ -22,6 +22,10 @@ app.get('/test', routes.test);
 /* ---- Head to Head Page ---- */
 app.get('/api/headtohead', routes.headtohead);
 
+/* ---- Preferences Page ---- */
+app.get('/preferences/:username/:price/:credit/:takeout/:outdoor', routes.preferences);
+
+
 const server = app.listen(8081, () => {
   console.log(`Server listening on PORT 8081`);
 });
