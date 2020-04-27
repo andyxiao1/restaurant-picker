@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Row } from 'react-bootstrap';
-//import RestaurantDetails from './RestaurantDetails';
 import RestaurantRow from './RestaurantRow';
 import '../style/Filter.css';
 
 
 
-export default class Filter extends React.Component {
+export default class Filter extends Component {
   constructor(props) {
 		super(props);
 

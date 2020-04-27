@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
-import RestaurantComparison from './RestaurantComparison/RestaurantComparison';
+import RestaurantComparison from './comparison/RestaurantComparison';
 import Filter from './filter/Filter.js';
 
 const App = () => {
@@ -41,7 +41,7 @@ const App = () => {
                 )}
               ></Route> */}
               {/* {isAdmin && <Route path="/admin" component={AdminPage}></Route>} */}
-              <Route path="/" component={RestaurantComparison}></Route>
+              <Route path="/" component={Filter}></Route>
             </Switch>
           </Col>
         </Row>
