@@ -1,0 +1,23 @@
+.rests-container {
+    display: flex;
+    flex-flow: column wrap;
+    margin-top: 10px;
+}
+
+.rest .header, .results .name, .results .grade, .results .stars, .results .address {
+    flex: 1 0 25%;
+}
+
+.rests-container .rest, .rests-container .results {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    height: 40px;
+    padding: 0 10px;
+}
+
+.rowTest{display:flex; flex-direction:row;}
+
+.h5 {
+	align-items: center;
+}

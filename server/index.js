@@ -28,6 +28,10 @@ app.get('/filter', routes.getGrades);
 app.get('/filter/:selectedGrade/:selectedStar', routes.bestRestsForGrade);
 
 
+/* ---- Preferences Page ---- */
+app.get('/preferences/:username/:price/:credit/:takeout/:outdoor', routes.preferences);
+
+
 const server = app.listen(8081, () => {
   console.log(`Server listening on PORT 8081`);
 });
