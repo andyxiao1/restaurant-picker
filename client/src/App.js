@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
-import Head2Head from './head2head/Head2Head.js';
+import RestaurantComparison from './RestaurantComparison/RestaurantComparison';
 
 const App = () => {
   return (
@@ -16,8 +16,8 @@ const App = () => {
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="headtohead" as={Link} to="/headtohead">
-                Head to Head
+              <Nav.Link eventKey="compare" as={Link} to="/compare">
+                Compare
               </Nav.Link>
             </Nav.Item>
           </Nav>
@@ -26,7 +26,7 @@ const App = () => {
           <Col>
             {/* Sets up URL routes */}
             <Switch>
-              <Route path="/headtohead" component={Head2Head}></Route>
+              <Route path="/compare" component={RestaurantComparison}></Route>
               {/* <Route
                 path="/login"
                 render={(props) => (
@@ -34,7 +34,7 @@ const App = () => {
                 )}
               ></Route> */}
               {/* {isAdmin && <Route path="/admin" component={AdminPage}></Route>} */}
-              <Route path="/" component={Head2Head}></Route>
+              <Route path="/" component={RestaurantComparison}></Route>
             </Switch>
           </Col>
         </Row>

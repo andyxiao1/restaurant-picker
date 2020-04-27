@@ -17,10 +17,10 @@ app.use(middleware.onFinishMiddleware);
 /* ---------------------------------------------------------------- */
 
 /* ---- Test Route ---- */
-app.get('/test', routes.test);
+app.get('/api/test', routes.test);
 
 /* ---- Head to Head Page ---- */
-app.get('/api/headtohead', routes.headtohead);
+app.get('/api/compare', routes.compare);
 
 const server = app.listen(8081, () => {
   console.log(`Server listening on PORT 8081`);
@@ -28,5 +28,5 @@ const server = app.listen(8081, () => {
 
 process.on('SIGINT', () => {
   server.close();
-  process.exit();
+  process.exit(1);
 });
