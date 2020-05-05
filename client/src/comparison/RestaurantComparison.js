@@ -52,6 +52,11 @@ class RestaurantComparison extends Component {
     const { status, restaurantData, id1, id2 } = this.state;
     if (status === 'display') {
       [restaurantOne, restaurantTwo] = restaurantData.rows;
+      if (restaurantOne[0] !== id1) {
+        [restaurantTwo, restaurantOne] = [restaurantOne, restaurantTwo];
+      }
+      //H2Chxto2e6dHTDJ8-s3-pQ -- Roberto Taco Shop
+      //v2UKNMDqWN1UaWlK2Ugx2Q -- Cicis Pizza
     }
     return (
       <Row className="h-100">

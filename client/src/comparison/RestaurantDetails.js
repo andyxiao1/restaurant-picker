@@ -12,6 +12,7 @@ const RestaurantDetails = ({ data, status, onNameChange, name }) => {
       ></Form.Control>
     );
   } else {
+    console.log(data);
     const [
       ,
       name,
@@ -21,6 +22,9 @@ const RestaurantDetails = ({ data, status, onNameChange, name }) => {
       categories,
       demerits,
       inspectionGrade,
+      avgRating,
+      minRating,
+      maxRating,
       hasBetterFood,
       isCleaner,
     ] = data;
@@ -37,6 +41,9 @@ const RestaurantDetails = ({ data, status, onNameChange, name }) => {
           {demerits} {isCleaner === 1 && <Checkmark />}
         </p>
         <p>{inspectionGrade}</p>
+        <p>{avgRating.toFixed(2)}</p>
+        <p>{minRating.toFixed(2)}</p>
+        <p>{maxRating.toFixed(2)}</p>
       </>
     );
   }

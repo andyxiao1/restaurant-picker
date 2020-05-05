@@ -8,6 +8,9 @@ const labels = [
   'Categories',
   'Demerits',
   'Inspection Grade',
+  'Average Rating',
+  'Minimum Rating',
+  'Maximum Rating',
 ];
 
 const RestaurantComparisonLabels = ({ status, onReset, onCompare }) => {
