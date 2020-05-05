@@ -91,13 +91,59 @@ function preferences(req, res){
   var outdoor = req.params.outdoor;
   var credit = req.params.credit;
   console.log(uname);
-  const sql_pref = `SELECT name, address, compat FROM(
-SELECT B.name, B.address, B.takeout, b.outdoor, b.credit, b.price_range, (B.takeout * ${takeout} + B.outdoor * ${outdoor} + b.price_range * ${price} + b.credit * ${credit}) as compat
+  const sql_pref = `SELECT name, address, business_id compat FROM(
+SELECT B.business_id, B.name, B.address, B.takeout, b.outdoor, b.credit, b.price_range, (B.takeout * ${takeout} + B.outdoor * ${outdoor} + b.price_range * ${price} + b.credit * ${credit}) as compat
 FROM business B
 WHERE ROWNUM <= 10
 ORDER BY compat DESC)`;
   req._oracledb
     .execute(sql_pref)
+    .then((data) => res.send(data))
+    .catch((err) => console.log(err));
+}
+
+function saveRecs0(req, res){
+  var uname = req.params.username;
+  var rec = req.params.recID0;
+  const sql = `INSERT INTO user_history (username, restaurant) VALUES ('${uname}', '${rec}')`;
+  console.log(sql);
+  console.log('HERE!')
+  req._oracledb
+    .execute(sql)
+    .then((data) => res.send(data))
+    .catch((err) => console.log(err));
+}
+
+function saveRecs1(req, res){
+  var uname = req.params.username;
+  var rec = req.params.recID1;
+  const sql = `INSERT INTO user_history (username, restaurant) VALUES ('${uname}', '${rec}')`;
+  console.log(sql);
+  console.log('HERE!')
+  req._oracledb
+    .execute(sql)
+    .then((data) => res.send(data))
+    .catch((err) => console.log(err));
+}
+
+function saveRecs2(req, res){
+  var uname = req.params.username;
+  var rec = req.params.recID2;
+  const sql = `INSERT INTO user_history (username, restaurant) VALUES ('${uname}', '${rec}')`;
+  console.log(sql);
+  console.log('HERE!')
+  req._oracledb
+    .execute(sql)
+    .then((data) => res.send(data))
+    .catch((err) => console.log(err));
+}
+
+function getUserHistory(req, res){
+  var uname = req.params.username;
+
+  const sql = `SELECT DISTINCT B.name FROM (SELECT restaurant FROM user_history U WHERE U.username = '${uname}') A JOIN Business B ON B.business_id = A.restaurant WHERE ROWNUM <= 10`;
+  req._oracledb
+    .execute(sql)
     .then((data) => res.send(data))
     .catch((err) => console.log(err));
 }
@@ -109,4 +155,8 @@ module.exports = {
   getGrades,
   bestRestsForGrade,
   preferences,
+  saveRecs0,
+  saveRecs1,
+  saveRecs2,
+  getUserHistory
 };

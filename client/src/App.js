@@ -4,6 +4,7 @@ import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
 import RestaurantComparison from './comparison/RestaurantComparison';
 import Filter from './filter/Filter.js';
 import Preferences from './recommendations/Preferences.js';
+import History from './history/History.js';
 
 const App = () => {
   return (
@@ -32,6 +33,11 @@ const App = () => {
                 Recommendation Engine
               </Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="history" as={Link} to="/history">
+                Saved Restaurants
+              </Nav.Link>
+            </Nav.Item>
           </Nav>
         </Navbar>
         <Row className="h-100">
@@ -48,6 +54,7 @@ const App = () => {
               ></Route> */}
               {/* {isAdmin && <Route path="/admin" component={AdminPage}></Route>} */}
               <Route path="/preferences" component={Preferences}></Route>
+              <Route path="/history" component={History}></Route>
               <Route path="/" component={Filter}></Route>
             </Switch>
           </Col>

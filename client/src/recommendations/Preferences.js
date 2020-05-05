@@ -13,7 +13,8 @@ export default class Preferences extends Component {
 			creditValue:-3,
 			takeoutValue: -3,
 			username: "",
-			recRestaurants: []
+			recRestaurants: [],
+			recIds: [],
 		};
 
 		this.changePrice = this.changePriceFunc.bind(this);
@@ -22,6 +23,7 @@ export default class Preferences extends Component {
 		this.changeTakeout = this.changeTakeoutFunc.bind(this);
 		this.changeUsername = this.changeUsernameFunc.bind(this);
 		this.submitPrefs = this.submitPrefsFunc.bind(this);
+		this.addToSaved = this.addToSavedFunc.bind(this);
 
 	}
 
@@ -55,7 +57,10 @@ export default class Preferences extends Component {
 		})
 	}
 
-	submitPrefsFunc(){
+	submitPrefsFunc(){ 
+		if(this.state.username === ""){
+			window.alert("Make sure you enter a username before you hit submit!")
+		} else {
 		fetch("http://localhost:8081/preferences/" + this.state.username + "/" +this.state.priceValue+ "/" + this.state.creditValue + "/" + this.state.takeoutValue + "/" + this.state.outdoorValue,
 			{
 				method: "GET"
@@ -69,20 +74,72 @@ export default class Preferences extends Component {
 				console.log(recList.rows[3]);
 				let recDivs = recListIter.map((recObj,i) => 
 					<RecommendationsRow name={recList.rows[i][0]} address={recList.rows[i][1]}/>
-					);				
+					);
+				let tempIds = [recList.rows[0][2], recList.rows[1][2], recList.rows[2][2]];
+				console.log(tempIds);
 				this.setState({
-					recRestaurants: recDivs
+					recRestaurants: recDivs,
+					recIds: tempIds
 				});
 
 			}, err=> {
 				console.log(err)
 			});
+		}
 	}
 
+	addToSavedFunc(){
+		if(this.state.username === "" || (this.state.recIds === undefined || this.state.recIds.length === 0)){
+			window.alert("Make sure you enter a username and hit submit first!")
+		} else {
+			console.log("WE BOUTTA FETCH");
+			console.log(this.state.username);
+			console.log(this.state.recIds[0]);
+			fetch("http://localhost:8081/preferences/saveRecs0/" + this.state.username + "/" + this.state.recIds[0],
+			{
+				method: "GET"
+			}).then(res => {
+				return res.json();
+			}, err => {
+				console.log(err);
+			}).then(output => {
+				console.log("PREF LINE 100")
+				console.log(output)
+			}, err => {
+				console.log("PREF LINE 103")
+				console.log(err);
+			});
+			fetch("http://localhost:8081/preferences/saveRecs1/" + this.state.username + "/" + this.state.recIds[1],
+			{
+				method: "GET"
+			}).then(res => {
+				return res.json();
+			}, err => {
+				console.log(err);
+			}).then(output => {
+				console.log("PREF LINE 116")
+				console.log(output)
+			}, err => {
+				console.log("PREF LINE 119")
+				console.log(err);
+			});
+			fetch("http://localhost:8081/preferences/saveRecs2/" + this.state.username + "/" + this.state.recIds[2],
+			{
+				method: "GET"
+			}).then(res => {
+				return res.json();
+			}, err => {
+				console.log(err);
+			}).then(output => {
+				console.log("PREF LINE 130")
+				console.log(output)
+			}, err => {
+				console.log("PREF LINE 133")
+				console.log(err);
+			});
 
-
-
-
+		}
+	}
 
 	
 	componentDidMount(){
@@ -146,7 +203,7 @@ export default class Preferences extends Component {
 				<button className="submit-btn" onClick={this.submitPrefs}>Submit</button>
 			</div>
 
-              <div className="h5" id="centerTitle">Results</div>
+              <div className="h5" id="centerTitle">You should consider eating at...</div>
 			        <div className="rests-container">
 			          <div className="rest">
 			            <div className="header"><strong>Restaurant Name</strong></div>
@@ -156,9 +213,9 @@ export default class Preferences extends Component {
 			            {this.state.recRestaurants}
 			          </div>
 			        </div>
-
-
-
+			    <div>
+			    	<button onClick={this.addToSaved}>Add Top 3 To Saved</button>
+			    </div>   
 			</div>
 
 
