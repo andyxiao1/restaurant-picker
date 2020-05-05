@@ -126,8 +126,8 @@ export default class Filter extends Component {
 			        <div className="rests-container">
 			          <div className="rest">
 			            <div className="header"><strong>Restaurant Name</strong></div>
-			            <div className="header"><strong>Inspection Grade</strong></div>
-                  <div className="header"><strong>Stars</strong></div>
+			            <div className="header"><strong>Stars</strong></div>
+                  <div className="header"><strong>Inspection Grade</strong></div>
                   <div className="header"><strong>Address</strong></div>
 			          </div>
 			          <div className="rests-container" id="results">
