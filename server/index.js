@@ -31,6 +31,17 @@ app.get('/filter/:selectedGrade/:selectedStar', routes.bestRestsForGrade);
 /* ---- Preferences Page ---- */
 app.get('/preferences/:username/:price/:credit/:takeout/:outdoor', routes.preferences);
 
+app.get('/preferences/saveRecs0/:username/:recID0', routes.saveRecs0);
+
+app.get('/preferences/saveRecs1/:username/:recID1', routes.saveRecs1);
+
+app.get('/preferences/saveRecs2/:username/:recID2', routes.saveRecs2);
+
+/*_____ User History Page -----*/
+app.get('/history/:username', routes.getUserHistory);
+
+
+
 
 const server = app.listen(8081, () => {
   console.log(`Server listening on PORT 8081`);

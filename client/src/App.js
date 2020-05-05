@@ -5,6 +5,7 @@ import RestaurantComparison from './comparison/RestaurantComparison';
 import Filter from './filter/Filter.js';
 import Home from './home/Home';
 import Preferences from './recommendations/Preferences.js';
+import History from './history/History.js';
 
 const App = () => {
   return (
@@ -33,6 +34,11 @@ const App = () => {
                 Recommendation Engine
               </Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="history" as={Link} to="/history">
+                Saved Restaurants
+              </Nav.Link>
+            </Nav.Item>
           </Nav>
         </Navbar>
         <Row className="h-100">
@@ -42,6 +48,7 @@ const App = () => {
               <Route path="/compare" component={RestaurantComparison}></Route>
               <Route path="/filter" component={Filter}></Route>
               <Route path="/preferences" component={Preferences}></Route>
+              <Route path="/history" component={History}></Route>
               <Route path="/" component={Home}></Route>
             </Switch>
           </Col>

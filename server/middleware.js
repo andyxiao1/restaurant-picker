@@ -1,4 +1,5 @@
 const oracledb = require('oracledb');
+oracledb.autoCommit = true;
 const dbConfig = require('./dbconfig.js');
 
 // attaches a new db connection to every request
