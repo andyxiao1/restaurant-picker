@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
 import RestaurantComparison from './comparison/RestaurantComparison';
 import Filter from './filter/Filter.js';
+import Home from './home/Home';
 import Preferences from './recommendations/Preferences.js';
 import History from './history/History.js';
 
@@ -46,16 +47,13 @@ const App = () => {
             <Switch>
               <Route path="/compare" component={RestaurantComparison}></Route>
               <Route path="/filter" component={Filter}></Route>
-              {/* <Route
-                path="/login"
-                render={(props) => (
-                  <Login onAccountChange={this.updateAccount} {...props} />
-                )}
-              ></Route> */}
-              {/* {isAdmin && <Route path="/admin" component={AdminPage}></Route>} */}
               <Route path="/preferences" component={Preferences}></Route>
+<<<<<<< HEAD
               <Route path="/history" component={History}></Route>
               <Route path="/" component={Filter}></Route>
+=======
+              <Route path="/" component={Home}></Route>
+>>>>>>> d0eed46f465d8893b3ed0da81939af6b0dcef981
             </Switch>
           </Col>
         </Row>

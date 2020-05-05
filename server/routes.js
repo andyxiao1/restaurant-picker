@@ -19,29 +19,45 @@ function compare(req, res) {
   } else {
     const sql = `
 WITH Combined AS (
-    (SELECT b.Business_Id, b.Name, b.Address, b.Stars, b.Review_Count, b.Categories, i.Current_Demerits, i.Current_Grade, 0 AS Better_Food, 0 AS Cleaner
-    FROM business b JOIN inspection i ON b.Name = i.restaurant_name
-    WHERE b.Business_Id = '${id1}'
-            AND ROWNUM <= 1)
-    UNION
-    (SELECT b.Business_Id, b.Name, b.Address, b.Stars, b.Review_Count, b.Categories, i.Current_Demerits, i.Current_Grade, 0 AS Better_Food, 0 AS Cleaner
-    FROM business b JOIN inspection i ON b.Name = i.restaurant_name
-    WHERE b.Business_Id = '${id2}'
-            AND ROWNUM <= 1)
+  (
+      SELECT bi.*, AVG(r.Stars) AS Avg_Rating, MIN(r.Stars) AS Min_Rating, MAX(r.Stars) AS Max_Rating, 0 AS Better_Food, 0 AS Cleaner
+      FROM reviews r JOIN (
+          SELECT b.Business_Id, b.Name, b.Address, b.Stars, b.Review_Count, b.Categories, i.Current_Demerits, i.Current_Grade
+          FROM business b JOIN inspection i ON b.Name = i.restaurant_name
+          WHERE b.Business_Id = '${id1}' AND ROWNUM <= 1
+          ) bi ON bi.business_id = r.business_id
+      GROUP BY bi.Business_Id, bi.Name, bi.Address, bi.Stars, bi.Review_Count, bi.Categories, bi.Current_Demerits, bi.Current_Grade
+  )
+  UNION
+  (
+      SELECT bi.*, AVG(r.Stars) AS Avg_Rating, MIN(r.Stars) AS Min_Rating, MAX(r.Stars) AS Max_Rating, 0 AS Better_Food, 0 AS Cleaner
+      FROM reviews r JOIN (
+          SELECT b.Business_Id, b.Name, b.Address, b.Stars, b.Review_Count, b.Categories, i.Current_Demerits, i.Current_Grade
+          FROM business b JOIN inspection i ON b.Name = i.restaurant_name
+          WHERE b.Business_Id = '${id2}' AND ROWNUM <= 1
+          ) bi ON bi.business_id = r.business_id
+      GROUP BY bi.Business_Id, bi.Name, bi.Address, bi.Stars, bi.Review_Count, bi.Categories, bi.Current_Demerits, bi.Current_Grade
+  )
 ), Compared AS (
-    (SELECT c.Business_Id, c.Name, c.Address, c.Stars, c.Review_Count, c.Categories, c.Current_Demerits, c.Current_Grade, 1 AS Better_Food, c.Cleaner
-    FROM Combined c 
-    WHERE c.Stars >= ALL (SELECT Stars FROM Combined))
-    UNION
-    (SELECT c.Business_Id, c.Name, c.Address, c.Stars, c.Review_Count, c.Categories, c.Current_Demerits, c.Current_Grade, c.Better_Food, 1 AS Cleaner
-    FROM Combined c 
-    WHERE c.Current_Demerits <= ALL (SELECT Current_Demerits FROM Combined))
-    UNION
-    (SELECT * FROM Combined)
+  (
+      SELECT c.Business_Id, c.Name, c.Address, c.Stars, c.Review_Count, c.Categories, c.Current_Demerits, c.Current_Grade, c.Avg_Rating, c.Min_Rating, c.Max_Rating, 1 AS Better_Food, c.Cleaner
+      FROM Combined c 
+      WHERE c.Stars >= ALL (SELECT Stars FROM Combined)
+  )
+  UNION
+  (
+      SELECT c.Business_Id, c.Name, c.Address, c.Stars, c.Review_Count, c.Categories, c.Current_Demerits, c.Current_Grade, c.Avg_Rating, c.Min_Rating, c.Max_Rating, c.Better_Food, 1 AS Cleaner
+      FROM Combined c 
+      WHERE c.Current_Demerits <= ALL (SELECT Current_Demerits FROM Combined)
+  )
+  UNION
+  (
+      SELECT * FROM Combined
+  )
 )
-SELECT c.Business_Id, c.Name, c.Address, c.Stars, c.Review_Count, c.Categories, c.Current_Demerits, c.Current_Grade, MAX(c.Better_Food) AS Better_Food, MAX(c.Cleaner) AS Cleaner
+SELECT c.Business_Id, c.Name, c.Address, c.Stars, c.Review_Count, c.Categories, c.Current_Demerits, c.Current_Grade, c.Avg_Rating, c.Min_Rating, c.Max_Rating, MAX(c.Better_Food) AS Better_Food, MAX(c.Cleaner) AS Cleaner
 FROM Compared c
-GROUP BY c.Business_Id, c.Name, c.Address, c.Stars, c.Review_Count, c.Categories, c.Current_Demerits, c.Current_Grade
+GROUP BY c.Business_Id, c.Name, c.Address, c.Stars, c.Review_Count, c.Categories, c.Current_Demerits, c.Current_Grade, c.Avg_Rating, c.Min_Rating, c.Max_Rating
     `;
     req._oracledb
       .execute(sql)
@@ -84,7 +100,7 @@ function bestRestsForGrade(req, res) {
     .catch((err) => console.log(err));
 }
 
-function preferences(req, res){
+function preferences(req, res) {
   var uname = req.params.username;
   var price = req.params.price;
   var takeout = req.params.takeout;

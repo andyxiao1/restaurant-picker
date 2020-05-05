@@ -19,8 +19,6 @@ class RestaurantComparison extends Component {
       alert('Missing restaurant ids!');
       return;
     }
-    // 7v-2HkyrfYkPf471v4gCmg
-    // Yo8NIJEtc8UEbPd38L35ow
     fetch(`http://localhost:8081/api/compare?id1=${id1}&id2=${id2}`)
       .then((res) => res.json())
       .then(({ successful, message, restaurantData }) => {
@@ -36,8 +34,8 @@ class RestaurantComparison extends Component {
       });
   };
 
-  onNameChange = (restaurant) => {
-    return ({ target: { value } }) => {
+  onChange = (restaurant) => {
+    return ({ value }) => {
       this.setState({ [restaurant]: value });
     };
   };
@@ -52,6 +50,13 @@ class RestaurantComparison extends Component {
     const { status, restaurantData, id1, id2 } = this.state;
     if (status === 'display') {
       [restaurantOne, restaurantTwo] = restaurantData.rows;
+      if (restaurantOne[0] !== id1) {
+        [restaurantTwo, restaurantOne] = [restaurantOne, restaurantTwo];
+      }
+      // H2Chxto2e6dHTDJ8-s3-pQ -- Roberto Taco Shop
+      // v2UKNMDqWN1UaWlK2Ugx2Q -- Cicis Pizza
+      // 7v-2HkyrfYkPf471v4gCmg -- Star Bucks
+      // Yo8NIJEtc8UEbPd38L35ow -- China One
     }
     return (
       <Row className="h-100">
@@ -63,14 +68,14 @@ class RestaurantComparison extends Component {
         <RestaurantDetails
           data={restaurantOne}
           status={status}
-          onNameChange={this.onNameChange('id1')}
-          name={id1}
+          onChange={this.onChange('id1')}
+          id={id1}
         />
         <RestaurantDetails
           data={restaurantTwo}
           status={status}
-          onNameChange={this.onNameChange('id2')}
-          name={id2}
+          onChange={this.onChange('id2')}
+          id={id2}
         />
       </Row>
     );

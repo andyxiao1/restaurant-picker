@@ -1,0 +1,84 @@
+/****************** QUERY 1 ******************/
+
+CREATE INDEX reviews_business_index
+ON Reviews(Business_Id);
+
+CREATE INDEX inspection_name_index
+ON Inspection(Restaurant_Name);
+
+/*
+WITH INDEXES    : ~100 ms
+WITHOUT INDEXES : ~900 ms
+*/
+
+WITH Combined AS (
+  (
+      SELECT bi.*, AVG(r.Stars) AS Avg_Rating, MIN(r.Stars) AS Min_Rating, MAX(r.Stars) AS Max_Rating, 0 AS Better_Food, 0 AS Cleaner
+      FROM reviews r JOIN (
+          SELECT b.Business_Id, b.Name, b.Address, b.Stars, b.Review_Count, b.Categories, i.Current_Demerits, i.Current_Grade
+          FROM business b JOIN inspection i ON b.Name = i.restaurant_name
+          WHERE b.Business_Id = '${id1}' AND ROWNUM <= 1
+          ) bi ON bi.business_id = r.business_id
+      GROUP BY bi.Business_Id, bi.Name, bi.Address, bi.Stars, bi.Review_Count, bi.Categories, bi.Current_Demerits, bi.Current_Grade
+  )
+  UNION
+  (
+      SELECT bi.*, AVG(r.Stars) AS Avg_Rating, MIN(r.Stars) AS Min_Rating, MAX(r.Stars) AS Max_Rating, 0 AS Better_Food, 0 AS Cleaner
+      FROM reviews r JOIN (
+          SELECT b.Business_Id, b.Name, b.Address, b.Stars, b.Review_Count, b.Categories, i.Current_Demerits, i.Current_Grade
+          FROM business b JOIN inspection i ON b.Name = i.restaurant_name
+          WHERE b.Business_Id = '${id2}' AND ROWNUM <= 1
+          ) bi ON bi.business_id = r.business_id
+      GROUP BY bi.Business_Id, bi.Name, bi.Address, bi.Stars, bi.Review_Count, bi.Categories, bi.Current_Demerits, bi.Current_Grade
+  )
+), Compared AS (
+  (
+      SELECT c.Business_Id, c.Name, c.Address, c.Stars, c.Review_Count, c.Categories, c.Current_Demerits, c.Current_Grade, c.Avg_Rating, c.Min_Rating, c.Max_Rating, 1 AS Better_Food, c.Cleaner
+      FROM Combined c 
+      WHERE c.Stars >= ALL (SELECT Stars FROM Combined)
+  )
+  UNION
+  (
+      SELECT c.Business_Id, c.Name, c.Address, c.Stars, c.Review_Count, c.Categories, c.Current_Demerits, c.Current_Grade, c.Avg_Rating, c.Min_Rating, c.Max_Rating, c.Better_Food, 1 AS Cleaner
+      FROM Combined c 
+      WHERE c.Current_Demerits <= ALL (SELECT Current_Demerits FROM Combined)
+  )
+  UNION
+  (
+      SELECT * FROM Combined
+  )
+)
+SELECT c.Business_Id, c.Name, c.Address, c.Stars, c.Review_Count, c.Categories, c.Current_Demerits, c.Current_Grade, c.Avg_Rating, c.Min_Rating, c.Max_Rating, MAX(c.Better_Food) AS Better_Food, MAX(c.Cleaner) AS Cleaner
+FROM Compared c
+GROUP BY c.Business_Id, c.Name, c.Address, c.Stars, c.Review_Count, c.Categories, c.Current_Demerits, c.Current_Grade, c.Avg_Rating, c.Min_Rating, c.Max_Rating
+
+/****************** QUERY 2 ******************/
+SELECT DISTINCT current_grade as grade
+FROM Inspection
+WHERE current_grade <> 'X'
+ORDER BY current_grade ASC
+
+
+/****************** QUERY 3 ******************/
+SELECT * 
+FROM ( 
+	SELECT DISTINCT b.Name as name, b.Stars as stars, i.current_grade as grade, b.Address as address
+	FROM Business b Join Inspection i ON b.name = i.restaurant_name
+	WHERE i.current_grade <= '${selectedGrade}' AND b.Stars >= ${selectedStar}
+  	ORDER BY stars DESC, i.current_grade ASC )
+WHERE ROWNUM <= 90
+
+/****************** QUERY 4 ******************/
+SELECT name, address, compat FROM(
+	SELECT B.name, B.address, B.takeout, b.outdoor, b.credit, b.price_range, (B.takeout * ${takeout} + B.outdoor * ${outdoor} + b.price_range * ${price} + b.credit * ${credit}) as compat
+	FROM business B
+	WHERE ROWNUM <= 10
+	ORDER BY compat DESC)
+
+/****************** QUERY 5 ******************/
+SELECT DISTINCT Name AS label, b.business_id AS value 
+FROM Business b 
+    JOIN inspection i 
+      ON b.name = i.restaurant_name 
+    JOIN reviews r 
+      ON b.business_id = r.business_id;
