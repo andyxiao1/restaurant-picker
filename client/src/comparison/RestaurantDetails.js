@@ -1,18 +1,19 @@
 import React from 'react';
-import { Col, Card, Form } from 'react-bootstrap';
+import { Col, Card } from 'react-bootstrap';
+import Select from 'react-select';
+import businesses from '../cache/businesses.json';
 
-const RestaurantDetails = ({ data, status, onNameChange, name }) => {
+const RestaurantDetails = ({ data, status, onChange }) => {
   let body = null;
   if (status === 'input') {
     body = (
-      <Form.Control
-        onChange={onNameChange}
-        value={name}
-        placeholder="Restaurant ID"
-      ></Form.Control>
+      <Select
+        options={businesses}
+        placeholder="Search for a business"
+        onChange={onChange}
+      />
     );
   } else {
-    console.log(data);
     const [
       ,
       name,

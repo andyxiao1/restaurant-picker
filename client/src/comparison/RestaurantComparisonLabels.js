@@ -25,7 +25,7 @@ const RestaurantComparisonLabels = ({ status, onReset, onCompare }) => {
     </Button>
   );
   return (
-    <Col className="col-1 pt-2">
+    <Col className="col-2 pt-2">
       {button}
       {!isInput &&
         labels.map((label) => (
